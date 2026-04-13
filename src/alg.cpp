@@ -58,6 +58,9 @@ string infx2pstfx(const string& inf) {
     result += stack.takeFromStack();
     result += ' ';
   }
+  if (!result.empty() && result.back() == ' ') {
+    result.pop_back();
+  }
   return result;
 }
 int eval(const string& post) {
