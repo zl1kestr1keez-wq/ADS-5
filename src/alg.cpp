@@ -3,16 +3,18 @@
 #include <cctype>
 #include "tstack.h"
 
-using namespace std;
+using std::string;
 
 int getPriority(char op) {
   if (op == '+' || op == '-') return 1;
   if (op == '*' || op == '/') return 2;
   return 0;
 }
+
 bool isOperator(char c) {
   return c == '+' || c == '-' || c == '*' || c == '/';
 }
+
 int doOperation(int left, int right, char op) {
   if (op == '+') return left + right;
   if (op == '-') return left - right;
@@ -20,6 +22,7 @@ int doOperation(int left, int right, char op) {
   if (op == '/') return left / right;
   return 0;
 }
+
 string infx2pstfx(const string& inf) {
   TStack<char, 100> stack;
   string result;
@@ -29,14 +32,12 @@ string infx2pstfx(const string& inf) {
       while (i < inf.length() && isdigit(inf[i])) {
         result += inf[i];
         i++;
-        }
+      }
       result += ' ';
       i--;
-    }
-    else if (c == '(') {
+    } else if (c == '(') {
       stack.addToStack(c);
-    }
-    else if (c == ')') {
+    } else if (c == ')') {
       while (!stack.stackIsEmpty() && stack.lookAtTop() != '(') {
         result += stack.takeFromStack();
         result += ' ';
@@ -44,9 +45,8 @@ string infx2pstfx(const string& inf) {
       if (!stack.stackIsEmpty() && stack.lookAtTop() == '(') {
         stack.takeFromStack();
       }
-    }
-    else if (isOperator(c)) {
-      while (!stack.stackIsEmpty() && 
+    } else if (isOperator(c)) {
+      while (!stack.stackIsEmpty() &&
         getPriority(stack.lookAtTop()) >= getPriority(c)) {
         result += stack.takeFromStack();
         result += ' ';
@@ -73,8 +73,7 @@ int eval(const string& post) {
       }
       stack.addToStack(number);
       i--;
-    }
-    else if (isOperator(c)) {
+    } else if (isOperator(c)) {
       int right = stack.takeFromStack();
       int left = stack.takeFromStack();
       int result = doOperation(left, right, c);
